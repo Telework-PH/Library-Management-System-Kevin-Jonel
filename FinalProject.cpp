@@ -5,7 +5,6 @@
 #include <string>
 #include <sstream>
 #include <ctime>
-#include <cstring>
 #include <cstdlib>
 #include <unordered_map>
 
@@ -110,7 +109,7 @@ vector<Book> books;
 static bool compareId(const Book &number1, const Book &number2) {
     return number1.id < number2.id;
 }
-string lowerCase(const std::string& str) {
+string lowerCase(const string& str) {
     string lowerLetter = str;
     transform(lowerLetter.begin(), lowerLetter.end(), lowerLetter.begin(), ::tolower);
     return lowerLetter;
@@ -130,16 +129,21 @@ void addBook() {
     cout << "\t\t\t\t\tAdd successful!" << endl;
 
     srand(time(0));
-    int random = 100 + (rand() % 1000);
+    int random = 1000 + (rand() % 100000);
     book.id = random;
     file << book.id << "," << book.title << "," << book.author << "," << book.publisher << endl;
     file.close();
+    cout << "\t\t\t\t\t----------------------------------" << endl;
+    cout << "\t\t\t\t\tBook ID: " << random << endl;
+    cout << "\t\t\t\t\tBook Title: " << book.title << endl;
+    cout << "\t\t\t\t\tBook Author: " << book.author << endl;
+    cout << "\t\t\t\t\tBook Publisher: " << book.publisher << endl;
     books.push_back(book);
 }
 void searchBook() {
     ifstream file("BookManagement.txt");
     string search;
-    cout << "\t\t\t\t\tSearch book here: " << endl;
+    cout << "\t\t\t\t\tSearch book here: " ;
     cin.ignore();
     getline(cin, search);
     bool bookFound = false;
@@ -309,16 +313,21 @@ void addPatron() {
     cout << "\t\t\t\t\tAdd successful!" << endl;
 
     srand(time(0));
-    int random = 100 + (rand() % 1000);
+    int random = 1000 + (rand() % 100000);
     patron.id = random;
     file << patron.id << "," << patron.name << "," << patron.contactNumber << "," << patron.email << endl;
     file.close();
+    cout << "\t\t\t\t\t----------------------------------" << endl;
+    cout << "\t\t\t\t\tPatron ID: " << random << endl;
+    cout << "\t\t\t\t\tPatron Name: " << patron.name << endl;
+    cout << "\t\t\t\t\tPatron Contact Number: " << patron.contactNumber << endl;
+    cout << "\t\t\t\t\tPatron Email: " << patron.email << endl;
     patrons.push_back(patron);
 }
 void searchPatron() {
     ifstream file("PatronManagement.txt");
     string search;
-    cout << "\t\t\t\t\tSearch patron here: " << endl;
+    cout << "\t\t\t\t\tSearch patron here: ";
     cin.ignore();
     getline(cin, search);
     bool patronFound = false;
@@ -624,10 +633,10 @@ int main() {
     loadCheckOutRecords();
     int userInterface, choice, select;
     loadUser();
+    login:
     cout << "\t\t\t\t\t===============================" << endl;
     cout << "\t\t\t\t\t|| LIBRARY MANAGEMENT SYSTEM ||" << endl;
     cout << "\t\t\t\t\t===============================" << endl;
-    login:
     cout << "\t\t\t\t\tLOG IN or SIGN UP" << endl;
     cout << "\t\t\t\t\t[1] Sign in account." << endl;
     cout << "\t\t\t\t\t[2] Sign up account." << endl;
@@ -635,6 +644,14 @@ int main() {
     cout << "\t\t\t\t\t----------------------------------" << endl;
     cout << "\t\t\t\t\tSelect: ";
     cin >> userInterface;
+    if (cin.fail() | userInterface < 0 || userInterface > 3){
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "\t\t\t\t\t----------------------------------" << endl;
+        cout << "\t\t\t\t\tInvalid input, please try again. " << endl;
+        cout << "\t\t\t\t\t----------------------------------" << endl;
+        goto login;
+    }
     if (userInterface == 1)
     {
         loginuser:
@@ -662,7 +679,7 @@ int main() {
     cout << "\t\t\t\t\t[2] Patron Management System." << endl;
     cout << "\t\t\t\t\t[3] Checked-out & Return Book." << endl;
     cout << "\t\t\t\t\t[0] Exit." << endl;
-    cout << "\t\t\t\t\t-------------------------------------" << endl;
+    cout << "\t\t\t\t\t----------------------------------" << endl;
     cout << "\t\t\t\t\tSelect: ";
     cin >> choice;
     if (choice == 1)
